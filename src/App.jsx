@@ -74,7 +74,7 @@ const INITIAL_CAMPUS_ITEMS = [
     proofRequired: 'Describe the third smaller key shape.',
     reporter: 'David Ray (MechEng)',
     contact: 'd.ray@campus.edu',
-    statusTag: 'REWARD OFFERED',
+    statusTag: 'ACTIVE SEARCH',
     imageGradient: 'linear-gradient(135deg, #332600, #664d00)'
   },
   {
