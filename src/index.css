@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg-dark: #0a0b10;
+  --bg-card-dark: #12141c;
+  --bg-white-card: #ffffff;
+  
+  --text-dark-primary: #111827;
+  --text-dark-secondary: #4b5563;
+  --text-light-primary: #f9fafb;
+  --text-light-secondary: #9ca3af;
+
+  --accent-cyan: #a3f2ff;
+  --accent-yellow: #f3ef96;
+  --accent-purple: #8b5cf6;
+  
+  --font-family: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-dark);
+  color: var(--text-light-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: #272a38;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3b3f54;
+}
