@@ -156,6 +156,14 @@ export default function App() {
   const [isTagging, setIsTagging] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Toast notification state
+  const [toastMessage, setToastMessage] = useState('');
+
+  const triggerToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(''), 4000);
+  };
+
   // Fetch reports from Supabase
   const fetchReports = async () => {
     setLoading(true);
@@ -182,7 +190,13 @@ export default function App() {
             ? 'linear-gradient(135deg, #10121a, #2a3148)'
             : 'linear-gradient(135deg, #0d261e, #1a4d3e)'
         }));
-        setItems(mappedData);
+
+        // Merge without overwriting unsaved or newly submitted local real-time reports
+        setItems(prevItems => {
+          const fetchedIds = new Set(mappedData.map(d => d.id));
+          const localOnly = prevItems.filter(p => !fetchedIds.has(p.id) && (p.id?.startsWith('rpt-') || p.id?.startsWith('temp-')));
+          return [...localOnly, ...mappedData];
+        });
       }
     } catch (err) {
       console.warn('Supabase fetch fallback to local state:', err);
@@ -195,7 +209,6 @@ export default function App() {
   useEffect(() => {
     fetchReports();
 
-    // Subscribe to Supabase Postgres Realtime changes for item_reports table
     const subscription = supabase
       .channel('realtime_item_reports')
       .on(
@@ -212,6 +225,16 @@ export default function App() {
       supabase.removeChannel(subscription);
     };
   }, []);
+
+  // Role Switcher Handler
+  const handleRoleSwitch = (newRole) => {
+    setRole(newRole);
+    // When switching roles, clear filters so all reports (lost & found) are visible in Admin view immediately
+    setTypeFilter('all');
+    setSearchQuery('');
+    setCategoryFilter('All');
+    setSelectedMapZone('');
+  };
 
   // Image Upload with live Gemini AI Auto-Tagging
   const handleImageUpload = (e) => {
@@ -270,6 +293,12 @@ export default function App() {
     // 1. Instant local real-time update
     setItems(prevItems => [newDbRecord, ...prevItems]);
 
+    // 2. Clear filters so the new report is at top of feed & admin list
+    setTypeFilter('all');
+    setSearchQuery('');
+    setCategoryFilter('All');
+    setSelectedMapZone('');
+
     try {
       const { data } = await supabase
         .from('item_reports')
@@ -292,6 +321,8 @@ export default function App() {
 
       if (data && data.length > 0) {
         const created = data[0];
+        setItems(prevItems => prevItems.map(item => item.id === newDbRecord.id ? { ...item, id: created.id } : item));
+        
         const matches = calculateMatches(created, items);
         if (matches.length > 0) {
           await supabase
@@ -300,14 +331,13 @@ export default function App() {
             .eq('id', created.id);
         }
       }
-
-      await fetchReports();
     } catch (err) {
       console.warn('Database save warning (saved to local real-time state):', err);
     } finally {
       setIsSubmitting(false);
       setShowReportModal(false);
       resetForm();
+      triggerToast(`🎉 Report for "${formTitle}" posted live! Visible in Student Feed & Admin Portal.`);
     }
   };
 
@@ -447,13 +477,13 @@ export default function App() {
           <div className="role-toggle-pill">
             <button
               className={`role-toggle-btn ${role === 'student' ? 'active' : ''}`}
-              onClick={() => setRole('student')}
+              onClick={() => handleRoleSwitch('student')}
             >
               <User size={13} /> Student Portal
             </button>
             <button
               className={`role-toggle-btn ${role === 'admin' ? 'active' : ''}`}
-              onClick={() => setRole('admin')}
+              onClick={() => handleRoleSwitch('admin')}
             >
               <Shield size={13} /> Admin Command
             </button>
@@ -468,6 +498,14 @@ export default function App() {
           </button>
         </div>
       </header>
+
+      {/* Floating Toast Notification */}
+      {toastMessage && (
+        <div className="toast-notification-banner">
+          <Sparkles size={16} className="text-cyan" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
 
       {/* 3. Hero Section */}
       <section className="campus-hero-section">
