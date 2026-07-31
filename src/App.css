@@ -921,3 +921,155 @@
   color: #4b5563;
   text-align: center;
 }
+
+/* Additional Integration Styles for Functional Engine & Map */
+.role-toggle-pill {
+  display: flex;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 3px;
+  border-radius: 20px;
+}
+
+.role-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 16px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.role-toggle-btn.active {
+  background: #ffffff;
+  color: #0a0b10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.campus-map-container-block {
+  width: 100%;
+  max-width: 1140px;
+  position: relative;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 24px;
+  padding: 24px;
+  margin-top: 24px;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+}
+
+.map-block-header {
+  margin-bottom: 16px;
+}
+
+.map-block-header h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0a0b10;
+  margin: 0 0 4px 0;
+}
+
+.map-block-header p {
+  font-size: 0.88rem;
+  color: #4b5563;
+  margin: 0;
+}
+
+.tag-cloud-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.ai-tag-badge {
+  background: rgba(0, 0, 0, 0.05);
+  color: #4b5563;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.matches-review-section {
+  margin-top: 16px;
+  border-top: 1px dashed #e5e7eb;
+  padding-top: 14px;
+}
+
+.matches-review-section h4 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.match-candidate-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 8px;
+  position: relative;
+}
+
+.match-percentage-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #7c3aed;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.admin-match-actions-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-approve-match {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-reject-match {
+  background: #dc2626;
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-resolve-match {
+  background: #059669;
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
