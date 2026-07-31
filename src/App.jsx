@@ -140,7 +140,6 @@ export default function App() {
 
   // Modals
   const [showReportModal, setShowReportModal] = useState(false);
-  const [showStudioModal, setShowStudioModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [claimSuccess, setClaimSuccess] = useState(false);
 
@@ -234,14 +233,6 @@ export default function App() {
         </nav>
 
         <div className="nav-actions">
-          <button
-            className="btn-customizer"
-            onClick={() => setShowStudioModal(true)}
-            title="Adjust Shader Colors"
-          >
-            <Palette size={16} />
-            <span>Theme Colors</span>
-          </button>
           <button
             className="btn-post-report"
             onClick={() => setShowReportModal(true)}
@@ -479,101 +470,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 7. Theme Customizer Modal */}
-      {showStudioModal && (
-        <div className="modal-overlay-bg" onClick={() => setShowStudioModal(false)}>
-          <div className="modal-panel-card" onClick={e => e.stopPropagation()}>
-            <div className="modal-title-row">
-              <div className="title-with-icon">
-                <Palette size={20} className="text-cyan" />
-                <h3>Grainient Background Customizer</h3>
-              </div>
-              <button className="close-btn" onClick={() => setShowStudioModal(false)}>
-                <X size={18} />
-              </button>
-            </div>
 
-            <p className="modal-subtitle">
-              Adjust shader colors live. Default settings match reference colors: <code className="code-tag">#a3f2ff</code>, <code className="code-tag">#ffffff</code>, <code className="code-tag">#f3ef96</code>.
-            </p>
-
-            <div className="colors-customizer-grid">
-              <div className="color-field">
-                <label>Color 1 (Cyan / Light Blue)</label>
-                <div className="input-swatch-pair">
-                  <span className="swatch" style={{ background: color1 }} />
-                  <input
-                    type="text"
-                    value={color1}
-                    onChange={e => setColor1(e.target.value)}
-                  />
-                  <input
-                    type="color"
-                    value={color1}
-                    onChange={e => setColor1(e.target.value)}
-                    className="native-color"
-                  />
-                </div>
-              </div>
-
-              <div className="color-field">
-                <label>Color 2 (Pure White)</label>
-                <div className="input-swatch-pair">
-                  <span className="swatch" style={{ background: color2 }} />
-                  <input
-                    type="text"
-                    value={color2}
-                    onChange={e => setColor2(e.target.value)}
-                  />
-                  <input
-                    type="color"
-                    value={color2}
-                    onChange={e => setColor2(e.target.value)}
-                    className="native-color"
-                  />
-                </div>
-              </div>
-
-              <div className="color-field">
-                <label>Color 3 (Pastel Yellow)</label>
-                <div className="input-swatch-pair">
-                  <span className="swatch" style={{ background: color3 }} />
-                  <input
-                    type="text"
-                    value={color3}
-                    onChange={e => setColor3(e.target.value)}
-                  />
-                  <input
-                    type="color"
-                    value={color3}
-                    onChange={e => setColor3(e.target.value)}
-                    className="native-color"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="modal-actions-bar">
-              <button
-                className="btn-secondary"
-                onClick={() => {
-                  setColor1('#a3f2ff');
-                  setColor2('#ffffff');
-                  setColor3('#f3ef96');
-                }}
-              >
-                Reset to Reference Colors
-              </button>
-              <button
-                className="btn-primary"
-                onClick={() => setShowStudioModal(false)}
-              >
-                Apply & Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* 8. Report Lost/Found Modal */}
       {showReportModal && (
