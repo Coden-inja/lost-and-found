@@ -1220,3 +1220,28 @@
   from { transform: translateX(100%); opacity: 0; }
   to { transform: translateX(0); opacity: 1; }
 }
+
+/* AI Tag Badges Clean Truncation & Containment */
+.tag-cloud-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-height: 28px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.ai-tag-badge {
+  background: rgba(0, 0, 0, 0.06);
+  color: #4b5563;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+

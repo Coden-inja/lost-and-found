@@ -688,7 +688,7 @@ export default function App() {
 
                   {item.ai_tags && item.ai_tags.length > 0 && (
                     <div className="tag-cloud-inline">
-                      {item.ai_tags.map((t, idx) => (
+                      {item.ai_tags.slice(0, 4).map((t, idx) => (
                         <span key={idx} className="ai-tag-badge">#{t}</span>
                       ))}
                     </div>

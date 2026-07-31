@@ -4,6 +4,18 @@
  * Fallback: Groq API (Qwen 3.6 27B / Llama 3.3)
  * Never throws — returns empty array on failure or timeout.
  */
+
+// Helper to sanitize, deduplicate, and limit AI tag length/count
+function sanitizeTags(rawOutput) {
+  if (!rawOutput) return [];
+  const rawList = rawOutput.split(/[,\n]/);
+  const cleaned = rawList
+    .map(tag => tag.replace(/^[^a-zA-Z0-9]+|[^a-zA-Z0-9\s]+$/g, '').trim().toLowerCase())
+    .filter(tag => tag.length >= 2 && tag.length <= 20 && !tag.includes('keyword'));
+  const unique = Array.from(new Set(cleaned));
+  return unique.slice(0, 5); // Max 5 concise tags
+}
+
 export async function generateTagsFromImage(base64Data, mimeType = 'image/jpeg') {
   const geminiKey = import.meta.env.VITE_GEMINI_API_KEY;
   const groqKey = import.meta.env.VITE_GROQ_API_KEY;
@@ -33,7 +45,7 @@ export async function generateTagsFromImage(base64Data, mimeType = 'image/jpeg')
                 {
                   parts: [
                     {
-                      text: 'Analyze this image of a lost or found item. Return 5 to 8 comma-separated descriptive keywords (e.g. black, leather, bifold, wallet, cash, id card). Output ONLY the comma-separated keywords and nothing else.'
+                      text: 'Analyze this image of a lost or found item. Return 4 to 5 short single-word or 2-word comma-separated keywords (e.g. black, leather, wallet, headphones). Output ONLY short comma-separated keywords and nothing else.'
                     },
                     {
                       inline_data: {
@@ -53,10 +65,8 @@ export async function generateTagsFromImage(base64Data, mimeType = 'image/jpeg')
           const data = await response.json();
           const textOutput = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
           if (textOutput) {
-            return textOutput
-              .split(',')
-              .map(tag => tag.trim().toLowerCase())
-              .filter(tag => tag.length > 0);
+            const tags = sanitizeTags(textOutput);
+            if (tags.length > 0) return tags;
           }
         }
       } catch (error) {
@@ -83,11 +93,11 @@ export async function generateTagsFromImage(base64Data, mimeType = 'image/jpeg')
             messages: [
               {
                 role: 'user',
-                content: 'List 5 to 8 comma-separated descriptive keywords for a lost item image (e.g. black, leather, bifold, wallet, cash, id card). Output ONLY the comma-separated keywords and nothing else.'
+                content: 'List 4 to 5 short single-word or 2-word comma-separated keywords for a lost item image (e.g. black, leather, wallet, headphones). Output ONLY short comma-separated keywords.'
               }
             ],
-            temperature: 0.6,
-            max_completion_tokens: 2048
+            temperature: 0.5,
+            max_completion_tokens: 100
           })
         });
 
@@ -96,10 +106,8 @@ export async function generateTagsFromImage(base64Data, mimeType = 'image/jpeg')
           const groqData = await groqRes.json();
           const groqText = groqData?.choices?.[0]?.message?.content || '';
           if (groqText) {
-            return groqText
-              .split(',')
-              .map(tag => tag.trim().toLowerCase())
-              .filter(tag => tag.length > 0);
+            const tags = sanitizeTags(groqText);
+            if (tags.length > 0) return tags;
           }
         }
       }
